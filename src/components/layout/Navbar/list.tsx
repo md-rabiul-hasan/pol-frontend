@@ -1,6 +1,5 @@
 import { ReactNode } from 'react'
 import { AiOutlineDashboard as DashboardIcon } from 'react-icons/ai'
-import { FaProductHunt } from 'react-icons/fa'
 import { IoSettingsOutline } from 'react-icons/io5'
 
 type MenuItem = {
@@ -27,7 +26,10 @@ export const menuItems = (roles: string[]) => [
   {
     label: 'Settings',
     icon: <IoSettingsOutline />,
-    links: [{ link: '/settings/store-categories', label: 'Store Categories' }]
+    links: [
+      { link: '/settings/store-categories', label: 'Store Categories' },
+      { link: '/settings/stores', label: 'Store List' },
+    ]
   }
 ]
 

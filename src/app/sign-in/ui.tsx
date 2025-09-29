@@ -23,8 +23,8 @@ const SignInUI = () => {
   const { onSubmit, getInputProps } = useForm<SignInValues>({
     validate: yupResolver(signInSchema),
     initialValues: {
-      email: undefined,
-      password: ''
+      email: 'test@example.com',
+      password: 'password'
     }
   })
 
@@ -51,18 +51,6 @@ const SignInUI = () => {
 
   return (
     <div className={classes.root}>
-      <Anchor href="https://www.sbacbank.com" target="_parent">
-        <Image
-          h={60}
-          w="auto"
-          src="/images/sbac-logo-white.png"
-          alt="SBAC Bank PLC."
-          pos="fixed"
-          top="1rem"
-          left="1rem"
-        />
-      </Anchor>
-
       <Container size="xs" className={classes.container}>
         <Paper p={28} shadow="sm" radius="md" className={classes.paper}>
           <Group justify="center" gap="xs" mb="xl">
@@ -70,17 +58,17 @@ const SignInUI = () => {
           </Group>
 
           <form onSubmit={onSubmit(submitHandler)}>
-            <Title size={25} mb={4} tt="uppercase" c="gray.1">
+            <Title size={25} mb={4} tt="uppercase" c="black">
               Sign In
             </Title>
 
-            <Text size="sm" mb="md" c="gray.3">
+            <Text size="sm" mb="md" c="black">
               Welcome back
             </Text>
 
             <TextInput
               label="Email"
-              c="gray.3"
+              c="black"
               leftSectionPointerEvents="none"
               leftSection={<MdEmail />}
               label="Your email"
@@ -94,7 +82,7 @@ const SignInUI = () => {
               label="Password"
               placeholder="Enter your password"
               leftSection={<PasswordIcon />}
-              c="gray.3"
+              c="black"
               withAsterisk
               mt="xs"
               {...getInputProps('password')}
@@ -117,8 +105,8 @@ const SignInUI = () => {
 
       <Text c="gray.2" size="xs" ta="center" className={classes.credits}>
         Designed & Developed by{' '}
-        <Anchor c="gray.1" href="https://www.sbacbank.com" target="_blank">
-          SBAC Bank&apos;s IT Division
+        <Anchor c="gray.1" href="https://github.com/md-rabiul-hasan" target="_blank">
+          Rabiul Hasan
         </Anchor>
       </Text>
     </div>

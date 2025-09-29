@@ -1,6 +1,6 @@
 'use client'
 
-import { deleteStoreCategory } from '@actions/settings/store-categories-config'
+import { deleteStore } from '@actions/settings/stores-config'
 import StatusBadge from '@components/common/status-bedge'
 import TableNav from '@components/common/table-nav'
 import TitleBar from '@components/common/title-bar'
@@ -12,16 +12,17 @@ import { showNotification } from '@mantine/notifications'
 import { getErrorMessage, getSuccessMessage } from '@utils/notification'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { startTransition, useEffect, useState } from 'react'
-import { AiTwotoneDelete } from "react-icons/ai"
+import { AiOutlineFileSearch, AiTwotoneDelete } from "react-icons/ai"
 import { FaPlusCircle } from 'react-icons/fa'
 import { IoIosMore as MoreIcon } from 'react-icons/io'
 import { TbEdit } from "react-icons/tb"
 import AddModal from './add'
+import Details from './details'
 import EditModal from './edit'
 
 // Define the props type
 
-const StoreCategoriesPageUi = ({ data: { data, pagination } }: any) => {
+const StorePageUi = ({ data: { data, pagination }, categories }: any) => {
   const router = useRouter() // Use Next.js router for navigation
   // Get search parameters and navigation function
   const searchParams = useSearchParams()
@@ -41,15 +42,23 @@ const StoreCategoriesPageUi = ({ data: { data, pagination } }: any) => {
 
   const addHandler = () =>
     openModal({
-      children: <AddModal />,
+      children: <AddModal categories={categories} />,
       centered: true,
       withCloseButton: false
     })
 
-  const editHandler = (store_category: any) =>
+  const editHandler = (store: any) =>
     openModal({
-      children: <EditModal store_category={store_category} />,
+      children: <EditModal store={store} categories={categories} />,
       centered: true,
+      withCloseButton: false
+    })
+
+  const detailsHandler = (id: number) =>
+    openModal({
+      children: <Details id={id} />,
+      centered: true,
+      size: 'lg',
       withCloseButton: false
     })
 
@@ -60,7 +69,7 @@ const StoreCategoriesPageUi = ({ data: { data, pagination } }: any) => {
       labels: { confirm: 'Confirm', cancel: 'Cancel' },
       onConfirm: () => {
         startTransition(async () => {
-          const res = await deleteStoreCategory(id)
+          const res = await deleteStore(id)
           if (res.success) {
             showNotification({ ...getSuccessMessage(res.message), autoClose: 10000 })
           } else {
@@ -80,7 +89,7 @@ const StoreCategoriesPageUi = ({ data: { data, pagination } }: any) => {
     <Container fluid>
       {/* Page title and search input */}
       <Group justify="space-between" mb="xs">
-        <TitleBar title="Store Categories" url="/" />
+        <TitleBar title="Store List" url="/" />
         <Group gap="xs">
           <TextInput
             placeholder="Search Here"
@@ -102,22 +111,28 @@ const StoreCategoriesPageUi = ({ data: { data, pagination } }: any) => {
           <Table.Thead>
             <Table.Tr>
               <Table.Th>SL</Table.Th>
-              <Table.Th>Category Name</Table.Th>
-              <Table.Th>User</Table.Th>
+              <Table.Th>Store Name</Table.Th>
+              <Table.Th>Store No</Table.Th>
+              <Table.Th>Floor Location</Table.Th>
+              <Table.Th>Category</Table.Th>
               <Table.Th>Status</Table.Th>
+              <Table.Th>User</Table.Th>
               <Table.Th>Action</Table.Th>
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>
             {data?.length > 0 ? (
-              data.map((store_category: any, index: number) => (
+              data.map((store: any, index: number) => (
                 <Table.Tr key={index}>
                   <Table.Td>{index + 1}</Table.Td>
-                  <Table.Td>{store_category.category_name}</Table.Td>
-                  <Table.Td>{store_category.user.name}</Table.Td>
+                  <Table.Td>{store.store_name}</Table.Td>
+                  <Table.Td>{store.store_no}</Table.Td>
+                  <Table.Td>{store.floor_location}</Table.Td>
+                  <Table.Td>{store.category.category_name}</Table.Td>
                   <Table.Td>
-                    <StatusBadge status={store_category.status} />
+                    <StatusBadge status={store.status} />
                   </Table.Td>
+                  <Table.Td>{store.user.name}</Table.Td>
                   <Table.Td>
                     <Menu withArrow>
                       <Menu.Target>
@@ -126,13 +141,19 @@ const StoreCategoriesPageUi = ({ data: { data, pagination } }: any) => {
                         </ActionIcon>
                       </Menu.Target>
                       <Menu.Dropdown>
-                        <Menu.Item onClick={() => editHandler(store_category)}>
+                        <Menu.Item onClick={() => editHandler(store)}>
                           <Group align="center" gap="xs">
                             <TbEdit size={16} />
                             <span>Edit</span>
                           </Group>
                         </Menu.Item>
-                        <Menu.Item onClick={() => deleteHandler(store_category.id)}>
+                        <Menu.Item onClick={() => detailsHandler(store.id)}>
+                          <Group align="center" gap="xs">
+                            <AiOutlineFileSearch size={16} />
+                            <span>Details</span>
+                          </Group>
+                        </Menu.Item>
+                        <Menu.Item onClick={() => deleteHandler(store.id)}>
                           <Group align="center" gap="xs">
                             <AiTwotoneDelete size={16} />
                             <span>Delete</span>
@@ -145,8 +166,8 @@ const StoreCategoriesPageUi = ({ data: { data, pagination } }: any) => {
               ))
             ) : (
               <Table.Tr>
-                <Table.Td colSpan={5} align="center">
-                  Store Category not found
+                <Table.Td colSpan={8} align="center">
+                  Store  not found
                 </Table.Td>
               </Table.Tr>
             )}
@@ -156,7 +177,7 @@ const StoreCategoriesPageUi = ({ data: { data, pagination } }: any) => {
 
       {/* Pagination Controls */}
       <TableNav
-        listName="Store Categories"
+        listName="Stores"
         limit={limit}
         limitHandler={handleLimitChange}
         page={pagination?.current_page!}
@@ -168,4 +189,4 @@ const StoreCategoriesPageUi = ({ data: { data, pagination } }: any) => {
   )
 }
 
-export default StoreCategoriesPageUi
+export default StorePageUi
