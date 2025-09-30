@@ -18,3 +18,18 @@ export const formatDateTime = (dateTime: string): string => {
   // Format the final string
   return `${day}-${month}-${year} ${hours}:${minutes} ${amPm}`
 }
+
+export const formatDate = (dateString: string): string => {
+  const months: string[] = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+  // Parse input datetime
+  const date: Date = new Date(dateString)
+
+  // Extract components
+  const day: number = date.getDate()
+  const month: string = months[date.getMonth()]
+  const year: string = date.getFullYear().toString().slice(-2) // Get last two digits of the year
+
+  // Format the final string
+  return `${day}-${month}-${year}`
+}

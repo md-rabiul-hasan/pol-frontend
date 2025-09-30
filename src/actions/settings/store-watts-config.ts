@@ -6,11 +6,11 @@ import api from '@utils/api'
 import { AxiosError } from 'axios'
 import { revalidatePath } from 'next/cache'
 
-export const getStoreOwnerList = async (params?: { page?: number; per_page?: number; search?: string }) => {
+export const getStoreWattList = async (params?: { page?: number; per_page?: number; search?: string }) => {
   try {
     const apiObj = await api()
 
-    const { data } = await apiObj.get('/settings/store-owners', {
+    const { data } = await apiObj.get('/settings/store-watts', {
       params
     })
 
@@ -23,14 +23,14 @@ export const getStoreOwnerList = async (params?: { page?: number; per_page?: num
   }
 }
 
-export const createStoreOwner = async (formData: StoreOwnerType, path?: string) => {
+export const createStoreWatt = async (formData: StoreOwnerType, path?: string) => {
   try {
     const apiObj = await api()
-    const { data } = await apiObj.post('/settings/store-owners', {
+    const { data } = await apiObj.post('/settings/store-watts', {
       ...formData
     })
 
-    revalidatePath('/settings/store-owners')
+    revalidatePath('/settings/store-watts')
 
     return data
   } catch (error) {
@@ -41,11 +41,11 @@ export const createStoreOwner = async (formData: StoreOwnerType, path?: string) 
   }
 }
 
-export const getStoreOwnerDetails = async (id: number) => {
+export const getStoreWattDetails = async (id: number) => {
   try {
     const apiObj = await api()
 
-    const { data } = await apiObj.get(`/settings/store-owners/${id}`)
+    const { data } = await apiObj.get(`/settings/store-watts/${id}`)
 
     return data
   } catch (error: any) {
@@ -56,11 +56,11 @@ export const getStoreOwnerDetails = async (id: number) => {
   }
 }
 
-export const updateStoreOwner = async (id: number, formData: StoreOwnerType) => {
+export const updateStoreWatt = async (id: number, formData: StoreOwnerType) => {
   try {
     const apiObj = await api()
-    const { data } = await apiObj.put(`/settings/store-owners/${id}`, formData)
-    revalidatePath('/settings/store-owners')
+    const { data } = await apiObj.put(`/settings/store-watts/${id}`, formData)
+    revalidatePath('/settings/store-watts')
     return data
   } catch (error) {
     return {
@@ -70,11 +70,11 @@ export const updateStoreOwner = async (id: number, formData: StoreOwnerType) => 
   }
 }
 
-export const deleteStoreOwner = async (id: number) => {
+export const deleteStoreWatt = async (id: number) => {
   try {
     const apiObj = await api()
-    const { data } = await apiObj.delete(`/settings/store-owners/${id}`)
-    revalidatePath('/settings/store-owners')
+    const { data } = await apiObj.delete(`/settings/store-watts/${id}`)
+    revalidatePath('/settings/store-watts')
     return data
   } catch (error) {
     return {

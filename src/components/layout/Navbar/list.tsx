@@ -29,7 +29,8 @@ export const menuItems = (roles: string[]) => [
     links: [
       { link: '/settings/store-categories', label: 'Store Categories' },
       { link: '/settings/stores', label: 'Store List' },
-      { link: '/settings/store-owners', label: 'Store Owner' }
+      { link: '/settings/store-owners', label: 'Store Owner' },
+      { link: '/settings/store-watts', label: 'Store Watts' }
     ]
   }
 ]
