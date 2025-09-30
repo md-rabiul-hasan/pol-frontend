@@ -1,4 +1,4 @@
-import { getStoreCategories } from '@actions/common-config'
+import { getCommonStoreCategories } from '@actions/common-config'
 import { getStoreList } from '@actions/settings/stores-config'
 import StoreCategoriesPageUi from './ui'
 
@@ -16,7 +16,7 @@ const StorePage = async ({ searchParams }: Props) => {
   const params = await searchParams
   const { per_page = 10, page = 1, search = '' } = params
   const res = await getStoreList({ page, per_page, search })
-  const categories = await getStoreCategories();
+  const categories = await getCommonStoreCategories()
   return <StoreCategoriesPageUi data={res} categories={categories} />
 }
 

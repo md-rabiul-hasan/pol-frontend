@@ -46,7 +46,6 @@ const AddModal = ({ categories }: any) => {
     })
   }
 
-
   return (
     <form onSubmit={onSubmit(submitHandler)}>
       <Title order={4} mb="md">
