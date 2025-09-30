@@ -50,3 +50,25 @@ export const storeWattValidationSchema = yup.object({
   effective_date: yup.string().required('Effective date is required'),
   remarks: yup.string().max(500, 'Remarks cannot exceed 500 characters')
 })
+
+export const committeeSignatoryValidationSchema = yup.object({
+  name: yup.string().required('Name is required').max(100, 'Name cannot exceed 100 characters'),
+  position: yup.string().required('Position is required').max(100, 'Position cannot exceed 100 characters'),
+  signature: yup
+    .mixed()
+    .test('fileSize', 'File size is too large', (value) => {
+      if (!value) return true // File is optional for update
+      if (value instanceof File) {
+        return value.size <= 5 * 1024 * 1024 // 5MB limit
+      }
+      return true
+    })
+    .test('fileType', 'Unsupported file format', (value) => {
+      if (!value) return true // File is optional for update
+      if (value instanceof File) {
+        return ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'].includes(value.type)
+      }
+      return true
+    }),
+  status: yup.string().required('Status is required')
+})
